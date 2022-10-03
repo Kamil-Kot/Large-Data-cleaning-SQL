@@ -1,0 +1,75 @@
+-----	 Extracting informations from Sale Data (Total Rows 541.909 )
+------    Database used   
+------    https://archive.ics.uci.edu/ml/machine-learning-databases/00352/
+
+SELECT * FROM online_retail 
+
+----Extracting amount of total rows and working out Max, average,minimum quantity 
+----and price by each Company in database.
+
+SELECT COUNT(InvoiceDate),Description
+FROM online_retail
+
+SELECT Description,MAX(UnitPrice),AVG(UnitPrice),MIN(UnitPrice)
+FROM online_retail
+GROUP BY Description
+
+SELECT Description, MAX(Quantity),AVG(Quantity),MIN(Quantity)
+FROM online_retail
+GROUP BY Description
+ORDER BY Quantity DESC
+
+=== Finding out which Country brings most profit and buys most products.
+
+SELECT Country,MAX(Quantity)
+FROM online_retail
+GROUP BY Country
+ORDER BY MAX(Quantity) DESC
+
+SELECT Country,MAX(Quantity),MAX(unitprice)
+FROM online_retail
+GROUP BY Country
+ORDER BY MAX(Quantity) DESC
+
+
+----- Most sold product
+
+SELECT Description,MAX(quantity),unitprice
+FROM online_retail
+GROUP BY Description
+
+
+--- Looking for specific dates and CustomerID for range in sales.
+
+SELECT Country,CustomerID,UnitPrice,InvoiceDate
+FROM online_retail
+WHERE Country = 'France' AND UnitPrice BETWEEN 1.75 AND 2.30
+GROUP BY Country,CustomerID,UnitPrice,InvoiceDate
+ORDER BY UnitPrice ASC
+
+SELECT Country,CustomerID,UnitPrice,InvoiceDate
+FROM online_retail
+WHERE Country = 'United Kingdom' AND UnitPrice BETWEEN 2 AND 2.8
+GROUP BY Country,CustomerID,UnitPrice,InvoiceDate
+ORDER BY UnitPrice ASC
+
+----- Cleaning data
+===== ( Total Records 541.909/ 135.000 No customer ID / 406.829 Have customer ID  )
+----- Clean Data 397.667
+------ 5215 Duplicate records
+
+SELECT InvoiceNo 
+		  ,StockCode
+		  ,Description
+		  ,Quantity
+		  ,InvoiceDate
+		  ,UnitPrice
+		  ,CustomerID
+		  ,Country
+FROM online_retail
+WHERE CUSTOMERID = 0 
+
+----- 397.882 records with Quantity and Unit Price
+select *
+from online_retail
+where Quantity > 0 and UnitPrice > 0
